@@ -12,8 +12,8 @@ public class Demo6 {
 
 
     public static void main(String[] args) {
-        Thread producer = new Thread(new Producer());
-        Thread consumer = new Thread(new Consumer());
+        Thread producer = new Thread(new Producer(), "Thread-Producer");
+        Thread consumer = new Thread(new Consumer(), "Thread-Consumer");
 
         producer.start();
         consumer.start();

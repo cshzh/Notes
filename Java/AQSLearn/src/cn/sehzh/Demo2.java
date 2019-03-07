@@ -10,15 +10,17 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class Demo2 {
 
-    public static int item = -1;
-    public static final Lock lock = new ReentrantLock();
-    public static final Condition condition = lock.newCondition();
+    private static int item = -1;
+    private static final Lock lock = new ReentrantLock();
+    private static final Condition condition = lock.newCondition();
 
 
     public static void main(String[] args) {
-        byte i = 10;
-        Thread producer = new Thread(new Producer());
-        Thread consumer = new Thread(new Consumer());
+        Thread producer;
+        Thread consumer;
+
+        producer = new Thread(new Producer(), "Thread-Producer");
+        consumer = new Thread(new Consumer(), "Thread-Consumer");
 
         producer.start();
         consumer.start();
@@ -73,6 +75,7 @@ public class Demo2 {
 
 //                    condition.signalAll();
                     condition.signal();
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
