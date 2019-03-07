@@ -3,8 +3,8 @@ package cn.sehzh;
 public class Main {
 
     public static void main(String[] args) {
-        Demo5 instance = Demo5.INSTANCE;
-        Demo5 instance1 = Demo5.INSTANCE;
+        Demo3 instance = Demo3.getInstance();
+        Demo3 instance1 = Demo3.getInstance();
         System.out.println(instance == instance1);
     }
 }
