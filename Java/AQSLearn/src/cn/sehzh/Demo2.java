@@ -16,6 +16,7 @@ public class Demo2 {
 
 
     public static void main(String[] args) {
+        byte i = 10;
         Thread producer = new Thread(new Producer());
         Thread consumer = new Thread(new Consumer());
 
