@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 生产者和消费者
+ * 生产者和消费者 （单个生产者单个消费者单个缓冲区）
  * 使用 lock 和 condition 实现
  */
 public class Demo2 {
@@ -39,7 +39,8 @@ public class Demo2 {
                     item = (int) (Math.random() * 100);
                     System.out.println("Produce: " + item);
 
-                    condition.signalAll();
+//                    condition.signalAll();
+                    condition.signal();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
@@ -69,7 +70,8 @@ public class Demo2 {
 
                     Thread.sleep(1000);
 
-                    condition.signalAll();
+//                    condition.signalAll();
+                    condition.signal();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {

@@ -1,18 +1,14 @@
 package cn.sehzh;
 
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 生产者和消费者 （单个生产者单个消费者单个缓冲区）
+ * 生产者和消费者 （多个生产者多个消费者多个缓冲区）
  * 使用  ArrayBlockingQueue 实现
  */
-public class Demo3 {
-    public static BlockingQueue<Integer> blockingQueue = new ArrayBlockingQueue<>(1);
+public class Demo6 {
+    public static BlockingQueue<Integer> blockingQueue = new ArrayBlockingQueue<>(3);
 
 
     public static void main(String[] args) {
@@ -52,6 +48,8 @@ public class Demo3 {
                     Integer item = blockingQueue.take();
 
                     System.out.println("Consume: " + item);
+
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

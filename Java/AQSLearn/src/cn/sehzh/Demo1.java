@@ -1,7 +1,7 @@
 package cn.sehzh;
 
 /**
- * 生产者和消费者
+ * 生产者和消费者 （单个生产者单个消费者单个缓冲区）
  * 使用wait 和 notifyAll 实现
  */
 public class Demo1 {
@@ -35,7 +35,8 @@ public class Demo1 {
                     item = (int) (Math.random() * 10);
                     System.out.println("Produce: " + item);
 
-                    Demo1.class.notifyAll();
+//                    Demo1.class.notifyAll();
+                    Demo1.class.notify();
                 }
             }
         }
@@ -59,7 +60,8 @@ public class Demo1 {
                     System.out.println("Consume: " + item);
                     item = -1;
 
-                    Demo1.class.notifyAll();
+//                    Demo1.class.notifyAll();
+                    Demo1.class.notify();
                 }
             }
         }
