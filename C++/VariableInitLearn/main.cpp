@@ -6,46 +6,45 @@ using namespace std;
 
 class People {
 public:
-    int id;
+    int id = -100;
     char *name;
 
-    People(const char name[], int id) {
-        cout << "1 or 2 construct function call..." << endl;
+    People(const char name[], int id) : id(id) {
+        cout << "2 construct function call..." << endl;
         this->name = new char[32];
         strcpy(this->name, name);
-        this->id = id;
+//        this->id = id;
     }
 
-    People() {
+    People() : id(-1) {
         cout << "0 construct function call..." << endl;
         this->name = new char[32];
-        this->id = -1;
+//        this->id = -1;
     }
 
-    People(const People &people) {
-        cout << "copy construct function call..." << endl;
-        this->name = new char[32];
-        strcpy(name, people.name);
-        this->id = people.id;
-    }
+//    People(const People &people) : id(people.id) {
+//        cout << "copy construct function call..." << endl;
+//        this->name = new char[32];
+//        strcpy(name, people.name);
+//    }
 
     ~People() {
 //        cout << "destructor..." << endl;
         delete[]name;
     }
 
-    People &operator=(const People &people) {
-        cout << "operator=(people) call..." << endl;
-        if (this == &people) {
-            return *this;
-        }
-
-        delete[] this->name;
-        this->name = new char[strlen(people.name) + 1];
-        strcpy(this->name, people.name);
-        this->id = people.id;
-        return *this;
-    }
+//    People &operator=(const People &people) {
+//        cout << "operator=(people) call..." << endl;
+//        if (this == &people) {
+//            return *this;
+//        }
+//
+//        delete[] this->name;
+//        this->name = new char[strlen(people.name) + 1];
+//        strcpy(this->name, people.name);
+//        this->id = people.id;
+//        return *this;
+//    }
 
     People &operator=(const char *const &name) {
         cout << "operator=(name) call..." << endl;
@@ -61,18 +60,37 @@ void InitLearn();
 
 void show(const std::string &name, const People &people);
 
+void PtrLearn();
+
 int main() {
-    People people("hzh", 23);
-
-    show("people", people);
-
+    People people = {"hzh", 23};
     People people1;
-    people1 = "qwe";
+    People people2 = {};
 
-    show("people1", people1);
-
+//    PtrLearn();
 //    InitLearn();
 
+
+}
+
+void PtrLearn() {
+    const char *name = "huang";
+
+    int a = 10, b = 30;
+    const int c = 40;
+    int const d = 50;
+
+    // 指针常量
+    int *const p = &a;
+    // 常量指针
+    int const *p1 = &a;
+    const int *p2 = &a;
+
+    cout << "p:" << *p << endl;
+
+    *p = 20;
+
+    cout << "p:" << *p << endl;
 }
 
 void show(const std::string &name, const People &people) {
