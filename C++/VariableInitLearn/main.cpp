@@ -6,7 +6,7 @@ using namespace std;
 
 class People {
 public:
-    int id = -100;
+    const int id = -100;
     char *name;
 
     People(const char name[], int id) : id(id) {
@@ -22,29 +22,31 @@ public:
 //        this->id = -1;
     }
 
-//    People(const People &people) : id(people.id) {
-//        cout << "copy construct function call..." << endl;
-//        this->name = new char[32];
-//        strcpy(name, people.name);
-//    }
+    People(const People &people) : id(people.id) {
+        cout << "copy construct function call..." << endl;
+        this->name = new char[32];
+        strcpy(name, people.name);
+    }
 
     ~People() {
 //        cout << "destructor..." << endl;
         delete[]name;
     }
 
-//    People &operator=(const People &people) {
-//        cout << "operator=(people) call..." << endl;
-//        if (this == &people) {
-//            return *this;
-//        }
-//
-//        delete[] this->name;
-//        this->name = new char[strlen(people.name) + 1];
-//        strcpy(this->name, people.name);
+    People &operator=(const People &people) {
+        cout << "operator=(people) call..." << endl;
+        if (this == &people) {
+            return *this;
+        }
+
+        delete[] this->name;
+        this->name = new char[strlen(people.name) + 1];
+        strcpy(this->name, people.name);
 //        this->id = people.id;
-//        return *this;
-//    }
+
+//        this = new People(people.name, people.id);
+        return *this;
+    }
 
     People &operator=(const char *const &name) {
         cout << "operator=(name) call..." << endl;
@@ -65,7 +67,9 @@ void PtrLearn();
 int main() {
     People people = {"hzh", 23};
     People people1;
-    People people2 = {};
+
+    people1 = people;
+    show("people1", people1);
 
 //    PtrLearn();
 //    InitLearn();
