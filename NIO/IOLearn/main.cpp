@@ -10,24 +10,37 @@
 
 void ReadFile();
 
-int main() {
-    const char *src = "128.2.194.242";
-    int *dst = new int{};
-    printf("%s\n", get_current_dir_name());
+void CreateServer();
 
-    if (inet_pton(AF_INET, src, dst) > 0) {
-        printf("%#x\n", *dst);
-        printf("%#x\n", htonl(*dst));
-        printf("%#x\n", htonl(htonl(*dst)));
-    } else {
-        printf("%s\n", strerror(errno));
-    }
+void CreateClient();
+
+int main() {
+    CreateServer();
+
+    CreateClient();
 
 //    ReadFile();
 
     return 0;
 }
 
+/**
+ * 创建客户端从网上获取内容
+ */
+void CreateClient() {
+    //TODO
+}
+
+/**
+ * 创建服务器返回客户端的输入并加上当前时间
+ */
+void CreateServer() {
+    //TODO
+}
+
+/**
+ * 读取CMakeLists文件
+ */
 void ReadFile() {
     int fd = open("/home/hui/Projects/Notes/NIO/IOLearn/CMakeLists.txt", O_RDONLY, 0);
 
