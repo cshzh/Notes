@@ -20,6 +20,9 @@ int dis[10005], n;
 priority_queue<Edge> q;
 
 void init() {
+
+
+
     for (int i = 1; i <= n; i++)
         dis[i] = 100000000;
     memset(life, 0, sizeof(life));
