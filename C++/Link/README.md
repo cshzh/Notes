@@ -22,7 +22,14 @@ ar rcs libsum.a sum.o
 gcc -o main main.c -L. -lsum
 ```
 
-共享库 也被称为共享目标，linux中常用 .so 后缀表示
+**缺点**
+
+- 每次库更新需要链接
+- 对于标准库来说，常用函数的代码会被复制到每个进程的文本段，浪费内存资源
+
+共享库 
+
+也被称为共享目标，linux中常用 .so 后缀表示（多个进程共享代码段的单一副本，每个进程会有自己的读/写数据块）
 
 ```
 gcc -shared -fpic -o libsum.so sum.c
@@ -30,7 +37,7 @@ gcc -o main main.c -L. -lsum
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./
 ```
 
-
+*PIC（Position-Independent Code, 位置无关代码) *
 
 传统静态链接
 
