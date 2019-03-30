@@ -5,3 +5,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_executable(Server Server.cpp)
 add_executable(Client Client.cpp)
+add_executable(FileIO main.cpp)

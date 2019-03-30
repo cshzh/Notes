@@ -1,15 +1,3 @@
-# UNP(unix network programming)
-
-## Signal（信号）
-
-| Signal  | Value | Action | Comment     |
-| ------- | ----- | ------ | ----------- |
-| SIGKILL | 9     | Term   | Kill signal |
-| SIGTERM | 15    | Term   | Termination |
-
-`SIGTERM`可以被捕获或者忽略，`SIGKILL`无法或者忽略。
-
-```c++
 #include <iostream>
 #include <signal.h>
 #include <unistd.h>
@@ -41,5 +29,3 @@ static void sig_hander(int signo) {
         printf("received signal %d\n", signo);
     }
 }
-```
-

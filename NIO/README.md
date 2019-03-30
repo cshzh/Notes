@@ -59,3 +59,5 @@ const char *gai_strerror(int errocode);
 
 `hints`是一个`addrinfo`结构，提供对`getaddrinfo`返回的套接字地址列表的更好控制。
 
+
+
