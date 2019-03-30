@@ -12,37 +12,23 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#define BUF_SIZE 500
+#define SERVER_PORT 8080
 
-void ReadFile();
-
-void CreateServer();
-
-void CreateClient();
+void CreateServer(int port);
 
 int main() {
-    CreateServer();
-
-//    CreateClient();
-
-//    ReadFile();
+    CreateServer(8080);
 
     return 0;
 }
 
 /**
- * 创建客户端从网上获取内容
+ * 创建服务器返回客户端的输入并加上当前时间（BIO实现）
+ * 使用TCP协议实现
  */
-void CreateClient() {
-    //TODO
-}
-
-#define BUF_SIZE 500
-
-/**
- * 创建服务器返回客户端的输入并加上当前时间
- */
-void CreateServer() {
-    //TODO
+void CreateServer(int port) {
+    //TODO select poll epoll
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     int sfd, s;
@@ -120,24 +106,5 @@ void CreateServer() {
                    (struct sockaddr *) &peer_addr,
                    peer_addr_len) != nread)
             fprintf(stderr, "Error sending response\n");
-    }
-}
-
-/**
- * 读取CMakeLists文件
- */
-void ReadFile() {
-    int fd = open("/home/hui/Projects/Notes/NIO/IOLearn/CMakeLists.txt", O_RDONLY, 0);
-
-    if (fd < 0) {
-        printf("open file fail.\n");
-        printf("%s\n", strerror(fd));
-    } else {
-        char buf[1024] = {};
-
-        long length = read(fd, buf, 1024);
-        printf("%s\n", buf);
-
-        close(fd);
     }
 }

@@ -1,3 +1,7 @@
+```
+
+```
+
 # select, poll 和epoll
 
 [select、poll、epoll之间的区别总结](https://www.cnblogs.com/Anker/p/3265058.html)
@@ -41,3 +45,17 @@ struct sockaddr {
 `listen`函数
 
 `accept`函数
+
+
+
+getaddrinfo函数
+
+```c
+int getaddrinfo(const char *host, const char *service,
+               const struct addrinfo *hints);
+void freeaddrinfo(struct addrinfo *result);
+const char *gai_strerror(int errocode);
+```
+
+`hints`是一个`addrinfo`结构，提供对`getaddrinfo`返回的套接字地址列表的更好控制。
+
