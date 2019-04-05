@@ -1,5 +1,17 @@
 计算机网络
 
+# IP
+
+![IP数据报格式](./IP数据报格式.png)
+
+> **协议**：1（ICMP）、2（IGMP）、6（TCP）、17（UDP）
+>
+> **标识字段**：唯一的标识主机发送的每一份数据报。
+>
+> **标志字段**：
+>
+> **片偏移**：
+
 # TCP
 
 TCP提供**面向连接**的、**可靠**的**字节流**服务。*（TCP不在字节流中插入记录标识）*
@@ -220,14 +232,22 @@ tcp_wmem
 
 tcp_defer_accept
 
+> 允许一个监听唤醒只当socket有数据到达的时候。采用一个整形值为参数（s），它可以与TCP为了完成连接所尝试的最大次数结合。这个选项不应在可移植的代码中使用。*(一定程度上可以限制全连接攻击)*
+
 tcp_cork
+
+> 如果启用，不发送部分帧。再次清除该选项时会发送所有排队的帧。这主要用于在调用**sendfile(2)**前prepending头部，还有流量优化。在当前的实现中，有一个200毫秒的上限，如果上限到达了，所有的排队的数据将自动传输。从Linux 2.5.71开始，这个选项可以和**TCP_NODELAY**组合使用。
+>
+> 这个选项不应用于可移植的代码中。*(cork:软木塞)*
 
 tcp_nodelay
 
+> 如果启用，表示禁用Nagle算法。这意味着报文将尽可能快的被发出去，甚至只有小量数据。如果没有启用，数据将被缓存到足够多才发送，这样可以避免频繁的发送小包的数据，从而提高网络的利用率。这个选项会被**TCP_CORK**覆盖；然而即使启用了**TCP_CORK**，启用这个选项仍然会强制显式刷新待发送的数据。
 
+*man tcp(7)*
 
 ```c
-// man listen
+// man listen(2)
 int listen(int sockfd, int backlog);
 ```
 
@@ -266,6 +286,27 @@ default qlen 1000 (ip addr)
 
 
 普通路由器只修改MAC地址，带NAT功能的会修改IP地址，带NAPT功能的才会修改端口地址。
+
+# 网卡
+
+网卡NIC(Network Interface Card)
+
+> 包含OSI模型中两个层的物理层和数据链路层
+>
+> - 物理层定义了数据传送与接收所需要的电与光信号、线路状态、时钟基准、数据编码和电路等，并向数据链路层设备提供标准接口
+> - 数据链路层则提供寻址机构、数据帧的构建、数据差错检查、传送控制、向网络层提供标准的数据接口等功能。
+
+10M以太网使用曼切斯特码，100M以太网使用差分曼切斯特码
+
+[Linux的网络协议中的网卡缓冲区](https://blog.csdn.net/Just_Do_IT_Ye/article/details/47000383)
+
+[网卡究竟工作在OSI的哪一层？](https://www.linuxidc.com/Linux/2012-12/77132.htm)
+
+[https://wenku.baidu.com/view/b33f12746edb6f1aff001f76.html?from=search](https://wenku.baidu.com/view/b33f12746edb6f1aff001f76.html?from=search)
+
+[https://wenku.baidu.com/view/5bc552808762caaedd33d451.html?from=search](https://wenku.baidu.com/view/5bc552808762caaedd33d451.html?from=search)
+
+
 
 
 
