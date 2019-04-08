@@ -73,6 +73,8 @@ CSAPP读书笔记
 
 ![进程上下文切换](./进程上下文切换.png)
 
+### 进程控制
+
 进程处于下面三种状态：
 
 - **运行**。执行或者等待执行
@@ -81,6 +83,25 @@ CSAPP读书笔记
 
 `_exit`：立马结束调用的进程，关闭所有打开的文件描述符，该进程的所有子进程会被`init(1)`收养。（或者是被最近的`subreaper`进程）。该进程的父进程会收到`SIGCHLD`信号。
 
+`wait`函数
+
+```c++
+pid_t wait(int *wstatus); // waitpid(-1, &wstatus, 0);
+pid_t waitpid(pid_t pid, int *wstatus, int options);
+```
+
+> **pid**
+>
+> - pid > 0, 等待一个单独的子进程
+> - pid = -1, 等待所有子进程
+>
+> **options**
+>
+> - WNOHANG
+> - WUNTRACED untraced
+>
+> **wstatus**
+
 ## 信号
 
 一个发出而没有被接收的信号叫做**待处理信号**(pending signal)。
@@ -88,3 +109,16 @@ CSAPP读书笔记
 pending位向量：维护待处理信号的集合。
 
 blocked位向量（信号掩码）：维护着被阻塞的信号集合。
+
+**接收信号**
+
+当内核把进程p从内核模式切换到用户模式（例如：从系统调用返回或者是完成了一次上下文切换）时，它会检查进程p的未被处理的信号的集合。（pending &~blocked）
+
+
+
+软中断
+
+硬件中断
+
+linux进程状态  可中断 nice
+
