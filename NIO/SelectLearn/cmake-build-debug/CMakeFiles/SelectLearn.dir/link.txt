@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/SelectLearn.dir/server.cpp.o CMakeFiles/SelectLearn.dir/client.cpp.o  -o SelectLearn 

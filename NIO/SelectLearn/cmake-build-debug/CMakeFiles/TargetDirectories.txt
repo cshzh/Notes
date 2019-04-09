@@ -1,3 +1,0 @@
-/home/hui/Projects/Notes/NIO/SelectLearn/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/hui/Projects/Notes/NIO/SelectLearn/cmake-build-debug/CMakeFiles/SelectLearn.dir
-/home/hui/Projects/Notes/NIO/SelectLearn/cmake-build-debug/CMakeFiles/edit_cache.dir

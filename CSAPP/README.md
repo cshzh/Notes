@@ -81,14 +81,24 @@ CSAPP读书笔记
 - **停止**。被挂起且不会被调度。当收到SIGSTOP，SIGTSTP，SIGTTIN或者SIGTTOU
 - **终止**。永运停止。原因：1）收到一个终止进程的信号，2）从主程序返回，3）调用exit函数
 
+```c++
+void exit(int status); // 以status状态退出状态来终止进程
+```
+
 `_exit`：立马结束调用的进程，关闭所有打开的文件描述符，该进程的所有子进程会被`init(1)`收养。（或者是被最近的`subreaper`进程）。该进程的父进程会收到`SIGCHLD`信号。
 
-`wait`函数
-
+```c++
+pid_t fork(void); //创建一个新的运行的子进程
+```
 ```c++
 pid_t wait(int *wstatus); // waitpid(-1, &wstatus, 0);
 pid_t waitpid(pid_t pid, int *wstatus, int options);
 ```
+
+`wait`函数：等进程改变状态，如果当前进程没有子进程返回－1，并设置errno
+
+改变状态为以下三种：子进程终止（默认），子进程由于收到信号停止和子进程收到信号继续执行
+
 
 > **pid**
 >
@@ -97,12 +107,67 @@ pid_t waitpid(pid_t pid, int *wstatus, int options);
 >
 > **options**
 >
-> - WNOHANG
-> - WUNTRACED untraced
+> - WNOHANG：立马返回如果没有子进程退出
+> - WUNTRACED：如果子进程stopped也返回 （默认情况下只当子进程终止的时候返回）
+> - WCONTINUED：如果停止的子进程由于收到`SIGCONT`信号继续执行也会返回
 >
 > **wstatus**
 
+```c++
+unsigned int sleep(unsigned int seconds); // 让一个进程挂起一段指定的时间
+```
+
+```c++
+int pause(void); // 让进程休眠直到进程收到一个信号
+```
+
+```c++
+int execve(const char *filename, char *const argv[],
+                  char *const envp[]); // 在当前进程的上下文加载并运行一个新的程序
+```
+
+
+
+### Linux下进程状态
+
+- R（TASK_RUNNING）
+- S（TASK_INTERRUPTIBLE）
+- D（TASK_UNINTERUPTIBLE）
+- T（TASK_STOPPED or TASK_TRACED）
+- Z（TASK_DEAD - EXIT_ZOMBIE）
+
+处于TASK_STOPPED状态（收到SIGSTOP、SIGTSTP等信号）的进程不会响应SIGTERM，但是会响应SIGKILL
+
+> **While a process is stopped, no more signals can be delivered to it until it is continued, except `SIGKILL` signals and (obviously) `SIGCONT` signals**. The signals are marked as pending, but not delivered until the process is continued. **The `SIGKILL` signal always causes termination of the process and can’t be blocked, handled or ignored**. You can ignore `SIGCONT`, but it always causes the process to be continued anyway if it is stopped. Sending a `SIGCONT` signal to a process causes any pending stop signals for that process to be discarded. Likewise, any pending `SIGCONT` signals for a process are discarded when it receives a stop signal.
+>
+> When a process in an orphaned process group (see [Orphaned Process Groups](https://www.gnu.org/software/libc/manual/html_node/Orphaned-Process-Groups.html#Orphaned-Process-Groups)) receives a `SIGTSTP`, `SIGTTIN`, or `SIGTTOU` signal and does not handle it, the process does not stop. Stopping the process would probably not be very useful, since there is no shell program that will notice it stop and allow the user to continue it. What happens instead depends on the operating system you are using. Some systems may do nothing; others may deliver another signal instead, such as `SIGKILL` or `SIGHUP`. On GNU/Hurd systems, the process dies with `SIGKILL`; this avoids the problem of many stopped, orphaned processes lying around the system.
+
+[Job-Control-Signals](https://www.gnu.org/software/libc/manual/html_node/Job-Control-Signals.html)
+
+### 进程IPC
+
+管道、先进先出（FIFO）、系统共享内存以及系统信号量（semaphore）
+
+### 与线程的区别
+
+> Linux使用1－1的线程模型，对于内核来说并不区分进程和线程，这些仅仅是可执行任务。
+>
+> 在Linux上，可以通过系统调用`clone`以不同共享级别复制任务
+>
+> - `CLONE_FILES`：共享相同的文件描述符表。（而不是创建一份复制）
+> - `CLONE_PARENT`：不在新旧任务之间创立父子关系。（否则：child's `getppid()`==parent's`getpid()`）
+> - `CLONE_VM`：共享相同的内存空间（(而不是创建一个 [COW](https://en.wikipedia.org/wiki/Copy-on-write) 的副本）
+> - ...
+>
+> `fork()` calls `clone`(least sharing) and `pthread_create()` calls `clone(`most sharing)
+
+[threads-vs-processes-in-linux](https://stackoverflow.com/questions/807506/threads-vs-processes-in-linux)
+
 ## 信号
+
+Linux信号：软件形式的异常，允许进程和内核中断其他进程。
+
+![Linux信号](./Linux信号.png)
 
 一个发出而没有被接收的信号叫做**待处理信号**(pending signal)。
 
@@ -110,15 +175,42 @@ pending位向量：维护待处理信号的集合。
 
 blocked位向量（信号掩码）：维护着被阻塞的信号集合。
 
-**接收信号**
+### 发送信号
+
+- /bin/kill
+- Ctrl + C: `SIGINT`; Ctrl + Z :`SIGTSTP`
+- `int kill(pid_t pid, int sig);`
+- ` unsigned int alarm(unsigned int seconds);`
+
+### **接收信号**
 
 当内核把进程p从内核模式切换到用户模式（例如：从系统调用返回或者是完成了一次上下文切换）时，它会检查进程p的未被处理的信号的集合。（pending &~blocked）
+
+```c++
+typedef void (*sighandler_t)(int);
+sighandler_t signal(int signum, sighandler_t handler);
+```
+
+**SIGSTOP**和**SIGKILL**的默认行为不能修改的。
+
+### 信号处理
+
+安全的信号处理
+
+1. 只调用异步信号安全的函数
+2. 保存和恢复errno
+3. 阻塞所有信号，保护对共享数据结构的访问
+4. 使用volatile声明全局变量
+
+正解的信号处理：**未处理的信号不排队**
 
 
 
 软中断
 
 硬件中断
+
+同时收到两个信号，如:SIGSTOP, SIGTSTP
 
 linux进程状态  可中断 nice
 
