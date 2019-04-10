@@ -10,3 +10,5 @@ target_link_libraries(Server pthread)
 add_executable(Client Client.cpp Client.h)
 target_link_libraries(Client csapp)
 target_link_libraries(Client pthread)
+
+add_executable(Main main.cpp)
