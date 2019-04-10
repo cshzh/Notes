@@ -3,4 +3,5 @@ project(SelectLearn)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(SelectLearn server.cpp client.cpp)
+add_executable(Server server.cpp)
+add_executable(Client client.cpp)
