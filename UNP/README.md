@@ -43,3 +43,7 @@ static void sig_hander(int signo) {
 }
 ```
 
+## 文件共享
+
+![找开文件的内核数据结构](./找开文件的内核数据结构.png)
+
