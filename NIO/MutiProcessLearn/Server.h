@@ -28,7 +28,6 @@ public:
     }
 
     void Run() {
-        // TODO 服务器突然关闭，客户端输出大量空行
         char port[] = "8080";
 
         int listenfd, connfd;
