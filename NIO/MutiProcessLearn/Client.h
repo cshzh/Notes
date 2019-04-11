@@ -19,12 +19,26 @@ extern "C" {
  * 实现思路：两个进程，交互进程和网络进程
  */
 class Client {
+private:
+    /**
+     * 防止产生僵尸进程
+     * @param signum
+     */
+    static void Sigchld_handler(int signum) {
+        if (waitpid(-1, nullptr, WNOHANG) > 0) {
+            exit(0);
+        }
+    }
+
 public:
     void Run() {
         char host[] = "127.0.0.1";
         char port[] = "8080";
         // 连接服务器
         int fd = Open_clientfd(host, port);
+
+        // 回收子进程
+        Signal(SIGCHLD, Sigchld_handler);
 
         int pid = Fork();
         // Fork
@@ -33,14 +47,20 @@ public:
             // 网络进程将服务器返回的数据打印到控制台
             while (true) {
                 char buf[1024] = {};
-                if (recv(fd, buf, 1024, 0) < 0) {
+                int length = recv(fd, buf, 1024, 0);
+                if (length < 0) {
                     Close(fd);
                     fprintf(stderr, "%s: %s\n", "child process", strerror(errno));
                     exit(2);
+                } else if (0 == length) {
+                    // 服务器已下线
+                    Close(fd);
+                    printf("服务器已下线\n");
+                    exit(1);
+                } else {
+                    printf("%s\n", buf);
                 }
-                printf("%s\n", buf);
             }
-            exit(0);
         } else {
             // 交互进程（父进程）从控制台读取数据
             // 交互进程将用户的输入发送到服务器
