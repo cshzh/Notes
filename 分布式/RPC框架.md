@@ -1,3 +1,17 @@
+# 集群
+
+> **VS:** Virtual Server, Director Server(DS), Dispather(调度器), Load Balancer
+>
+> **RS:** Real Server(LVS), upstream server(nginx), backend server(haproxy)
+>
+> **CIP:** Client IP
+>
+> **VIP:** Virtual Server IP
+>
+> **DIP:** Director IP
+>
+> **RIP:** Real Server IP
+
 # RPC框架
 
 ### **实现RPC需要用到的技术**
