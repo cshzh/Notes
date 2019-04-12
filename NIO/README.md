@@ -1,12 +1,4 @@
-```
-
-```
-
-# select, poll 和epoll
-
-[select、poll、epoll之间的区别总结](https://www.cnblogs.com/Anker/p/3265058.html)
-
-## IO编程
+# 网络编程
 
 ![基于套接字的网络应用](./IOLearn/基于套接字的网络应用.png)
 
@@ -66,6 +58,26 @@ const char *gai_strerror(int errocode);
 ## 基于进程的并发服务器
 
 ## 基于I/O多路复用的并发编程
+
+[select、poll、epoll之间的区别总结](https://www.cnblogs.com/Anker/p/3265058.html)
+
+## select 
+
+```c++
+int select(int nfds, fd_set *readfds, fd_set *writefds,
+	fd_set *exceptfds, struct timeval *timeout);
+
+void FD_CLR(int fd, fd_set *set);
+int  FD_ISSET(int fd, fd_set *set);
+void FD_SET(int fd, fd_set *set);
+void FD_ZERO(fd_set *set);
+```
+
+> select() can monitor only file descriptors numbers that are less than FD_SETSIZE; poll(2) does not have this limitation. 
+
+## poll
+
+## epoll
 
 ### 基于I/O多路复用的并发事件驱动服务器
 
