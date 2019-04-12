@@ -77,6 +77,12 @@ void FD_ZERO(fd_set *set);
 
 ## poll
 
+```c++
+int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+```
+
+
+
 ## epoll
 
 ### 基于I/O多路复用的并发事件驱动服务器
