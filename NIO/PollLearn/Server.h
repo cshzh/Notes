@@ -2,18 +2,19 @@
 // Created by hui on 19-4-10.
 //
 
-#ifndef SELECTLEARN_SERVER_H
-#define SELECTLEARN_SERVER_H
+#ifndef POLLLEARN_SERVER_H
+#define POLLLEARN_SERVER_H
 
 #include <iostream>
-#include <list>
+#include <map>
+#include <poll.h>
+#include <climits>
 
 extern "C" {
 #include <csapp/csapp.h>
 }
 
 struct TP {
-    int connfd;
     char *addr;
     int port;
 };
@@ -25,39 +26,59 @@ struct TP {
  * 当收到控制台传来的中断信号时，断开所有打开的连接并关闭子进程
  */
 class Server {
+private:
+    static const int MAX_LENGTH = 1024;
+
 public:
     void Run() {
-        fd_set read_set, ready_set;
-
         char listen_port[] = "8080";
         int listen_fd, connfd;
-        std::list<TP> fd_list;
+        int maxi, nready;
+        std::map<int, TP> map;
+        pollfd clients[1024];
 
         socklen_t clientlen;
         sockaddr_storage client_addr;
 
         listen_fd = Open_listenfd(listen_port);
+//
+//        FD_ZERO(&read_set);
+//        FD_SET(listen_fd, &read_set);
 
-        FD_ZERO(&read_set);
-        FD_SET(listen_fd, &read_set);
+        clients[0].fd = listen_fd;
+        clients[0].events = POLLIN;
+        for (int i = 1; i < 1024; i++) {
+            clients[i].fd = -1;
+        }
+        maxi = 0;
 
         connfd = listen_fd;
         while (true) {
 
-            ready_set = read_set;
-            Select(connfd + 1, &ready_set, NULL, NULL, NULL);
+            nready = poll(clients, maxi + 1, INFINITY);
 
             // 监听的端口
-            if (FD_ISSET(listen_fd, &ready_set)) {
+            if (clients[0].revents & (POLLIN | POLLERR)) {
                 clientlen = sizeof(sockaddr_storage);
                 connfd = Accept(listen_fd, (SA *) &client_addr, &clientlen);
-                FD_SET(connfd, &read_set);
+
+                // TODO 1024
+                for (int i = 1; i < 1024; i++) {
+                    if (clients[i].fd < 0) {
+                        clients[i].fd = connfd;
+                        clients[i].events = POLLIN;
+                        if (i > maxi) {
+                            maxi = i;
+                        }
+                        break;
+                    }
+                }
 
                 sockaddr_in *sockaddrIn = (sockaddr_in *) &client_addr;
                 char *cur_client_addr = inet_ntoa(sockaddrIn->sin_addr);
                 int port = ntohs(sockaddrIn->sin_port);
 
-                fd_list.push_back({connfd, cur_client_addr, port});
+                map[connfd] = {cur_client_addr, port};
 
                 // 打印连接的客户端
                 printf("%s:%d connect\n", cur_client_addr, port);
@@ -69,48 +90,50 @@ public:
                     exit(3);
                 }
 
+
             }
 
             // 连接的客户端
-            for (auto begin = fd_list.begin(); begin != fd_list.end();) {
-                auto tp = *begin;
-                if (FD_ISSET(tp.connfd, &ready_set)) {
-                    char buf[1024];
+            for (int i = 1; i <= maxi; i++) {
+                if (clients[i].fd < 0) {
+                    continue;
+                }
+
+                if (clients[i].revents & (POLLIN | POLLERR)) {
+                    auto connfd = clients[i].fd;
+                    auto tp = map[connfd];
+
+                    char buf[MAX_LENGTH];
                     char *cur_client_addr = tp.addr;
                     int cur_client_port = tp.port;
 
                     // TODO 使用while读取多段数据
                     // 读取客户端的数据
-                    int length = recv(tp.connfd, buf, 1024, 0);
+                    int length = recv(connfd, buf, MAX_LENGTH, 0);
                     if (length < 0) {
                         // 发生错误
-                        Close(tp.connfd);
-                        fprintf(stderr, "%s: %s\n", "child process", strerror(errno));
+                        Close(connfd);
+                        fprintf(stderr, "%s: %s\n", "recv", strerror(errno));
                         exit(3);
                     } else if (0 == length) {
                         // 客户端断开连接
-                        Close(tp.connfd);
+                        Close(connfd);
                         printf("%s:%d disconnected\n", cur_client_addr, cur_client_port);
-                        FD_CLR(tp.connfd, &read_set);
-                        begin = fd_list.erase(begin);
-//                        exit(3);
+                        map.erase(connfd);
                     } else {
                         // 将读取到的数据输出到控制台
                         printf("recv(%s:%d): %s\n", cur_client_addr, cur_client_port, buf);
 
                         // 将数据返回给客户端
-                        if (send(tp.connfd, buf, strlen(buf), 0) < 0) {
-                            fprintf(stderr, "%s: %s\n", "child process", strerror(errno));
+                        if (send(connfd, buf, strlen(buf), 0) < 0) {
+                            fprintf(stderr, "%s: %s\n", "send", strerror(errno));
                             exit(3);
                         }
-                        begin++;
                     }
-                } else {
-                    begin++;
                 }
             }
         }
     }
 };
 
-#endif // SELECTLEARN_SERVER_H
+#endif // POLLLEARN_SERVER_H
