@@ -2,13 +2,12 @@
 // Created by hui on 19-4-10.
 //
 
-#ifndef POLLLEARN_CLIENT_H
-#define POLLLEARN_CLIENT_H
+#ifndef EPOLLLEARN_CLIENT_H
+#define EPOLLLEARN_CLIENT_H
 
 #include <iostream>
 #include <cstring>
 #include <string>
-//#include <poll.h>
 #include <sys/epoll.h>
 
 extern "C" {
@@ -23,7 +22,7 @@ int nfds, epollfd;
 /**
  * 从控制台获取输入，将客户的输入发送到服务器
  * 连接服务器，从服务器读取返回的结果，将结果打印到控制台。
- * 实现思路：使用Poll
+ * 实现思路：使用epoll
  */
 class Client {
 private:
@@ -33,17 +32,11 @@ public:
 
     void Run() {
 
-//        pollfd pollfds[1024];
-
         char host[] = "127.0.0.1";
         char port[] = "8080";
         // 连接服务器
         int connectedfd = Open_clientfd(host, port);
 
-//        pollfds[0].fd = STDIN_FILENO;
-//        pollfds[0].events = POLLIN;
-//        pollfds[1].fd = connectedfd;
-//        pollfds[1].events = POLLIN;
         epollfd = epoll_create1(0);
         if (-1 == epollfd) {
             perror("epoll_create1");
@@ -108,4 +101,4 @@ public:
 };
 
 
-#endif //POLLLEARN_CLIENT_H
+#endif //EPOLLLEARN_CLIENT_H
