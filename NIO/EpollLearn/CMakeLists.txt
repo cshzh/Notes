@@ -1,9 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
-project(PollLearn)
+project(EpollLearn)
 
 set(CMAKE_CXX_STANDARD 14)
-
-add_executable(PollLearn main.cpp)
 
 add_executable(Server Server.cpp Server.h)
 target_link_libraries(Server csapp)
