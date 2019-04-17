@@ -10,11 +10,9 @@ ar 归档，可将多个.o文件归档成一个静态链接库，通常后缀名
 
 ld 链接器，可执行的目标文件
 
+# 编译成库文件
 
-
-编译成库文件
-
-静态库
+## 静态库
 
 ```
 gcc -c sum.c -o sum.o
@@ -27,7 +25,7 @@ gcc -o main main.c -L. -lsum
 - 每次库更新需要链接
 - 对于标准库来说，常用函数的代码会被复制到每个进程的文本段，浪费内存资源
 
-共享库 
+## 共享库 
 
 也被称为共享目标，linux中常用 .so 后缀表示（多个进程共享代码段的单一副本，每个进程会有自己的读/写数据块）
 
@@ -37,7 +35,7 @@ gcc -o main main.c -L. -lsum
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./
 ```
 
-*PIC（Position-Independent Code, 位置无关代码) *
+PIC（Position-Independent Code, 位置无关代码) 
 
 传统静态链接
 
@@ -56,3 +54,33 @@ void *dlopen(const char*filename, int flag);
 void *dlsym(void *handle, char *symbol);
 ```
 
+# ELF文件格式
+
+# 重定位
+
+- 重定位节和符号定义
+- 重定位节中的符号引用
+
+## 重定位条目
+
+代码的重定位条目放在.rel.text中，已初始化的数据的重定位条目放在.rel.data中。
+
+# 链接
+
+
+
+# 加载
+
+## 地址随机化
+
+ASLR**(Address Space Layout Randomization)
+
+```bash
+cat /proc/sys/kernel/randomize_va_space
+```
+
+> - 0 = 关闭
+> - 1 = 半随机。共享库、栈、mmap() 以及 VDSO 将被随机化。（留坑，PIE会影响heap的随机化。。）
+> - 2 = 全随机。除了1中所述，还有heap。
+
+[Linux下关闭ALSR(地址空间随机化)的方法](https://blog.csdn.net/counsellor/article/details/81543197)
