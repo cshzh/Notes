@@ -1,45 +1,58 @@
 #include <iostream>
-#include <vector>
-
-using namespace std;
-#include <stdio.h>
-#include <string>
+#include <cstring>
 #include <algorithm>
 
-using namespace std;
 
 class ResourceOwner {
+
 public:
-    ResourceOwner(const char res[]) {
-        theResource = new string(res);
+    explicit ResourceOwner(const char res[]) {
+        printf("construct %s\n", res);
+
+        this->theResource = new char[1024];
+        std::strcpy(this->theResource, res);
     }
 
-    ResourceOwner(const ResourceOwner& other) {
-        printf("copy %s\n", other.theResource->c_str());
-        theResource = new string(other.theResource->c_str());
+    ResourceOwner(const ResourceOwner &other) {
+        printf("copy %s\n", other.theResource);
+
+        this->theResource = new char[1024];
+        std::strcpy(this->theResource, other.theResource);
     }
 
-    ResourceOwner& operator=(const ResourceOwner& other) {
-        ResourceOwner tmp(other);
-        swap(theResource, tmp.theResource);
-        printf("assign %s\n", other.theResource->c_str());
+    ResourceOwner &operator=(const ResourceOwner &other) {
+        printf("assign %s\n", other.theResource);
+
+        std::strcpy(this->theResource, other.theResource);
+
+        return *this;
     }
+
+//    ResourceOwner &operator=(const char res[]) {
+//        printf("assign %s\n", res);
+//
+//        std::strcpy(this->theResource, res);
+//
+//        return *this;
+//    }
 
     ~ResourceOwner() {
         if (theResource) {
-            printf("destructor %s\n", theResource->c_str());
-            delete theResource;
+            printf("destructor %s\n", this->theResource);
+            delete[]theResource;
         }
     }
+
 private:
-    string* theResource;
+    char *theResource;
 };
 
 void testCopy() {
     // case 1
     printf("=====start testCopy()=====\n");
     ResourceOwner res1("res1");
-    ResourceOwner res2 = res1;
+    ResourceOwner res2("res2");
+    res2 = "tmp";
     //copy res1
     printf("=====destructors for stack vars, ignore=====\n");
 }
@@ -65,6 +78,6 @@ void testRValue() {
 
 int main() {
     testCopy();
-    testAssign();
-    testRValue();
+//    testAssign();
+//    testRValue();
 }
