@@ -48,7 +48,7 @@ git push origin dev:dev
 
 `git checkout --track origin/dev`
 
-```
+```bash
 // 从远程分支dev创建本地分支feature
 git checkout -b feature origin/dev
 ```
@@ -72,7 +72,7 @@ git push origin :dev
 
 从仓库更新更新跟踪的远程分支
 
-```
+```bash
 git pull
 git pull origin
 ```
