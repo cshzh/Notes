@@ -13,7 +13,7 @@
 
 规范推导、规范句型
 
-> 最左（最右）推导：在推导的任何一步$\alpha \overset {*}{\Rightarrow } \beta​$，其中$\alpha​$、$\beta ​$是句型，都是对$\alpha ​$中的最左（右）非终结符进行替换。
+> 最左（最右）推导：在推导的任何一步$\alpha \overset {*}{\Rightarrow } \beta$，其中$\alpha$、$\beta $是句型，都是对$\alpha $中的最左（右）非终结符进行替换。
 >
 > 最右推导被称为**规范推导**。
 >
@@ -32,7 +32,7 @@
 
 > 文法G[S]，若$S \underset{r}{\overset{*}{\Rightarrow}} \alpha A\omega \underset{r}{\Rightarrow} \alpha\beta\omega$是文法$G$的拓广文法$G^{'} $ 的一个规范推导，符号串$\gamma$是$\alpha\beta $的前缀，则称$\gamma $是$G$的一个**活前缀**。（$\alpha,\beta \in V^{+}, \omega \in V^{*}_{T}, A \in V_{N}$，若$\gamma $是含句柄的活前缀，则称$\gamma $是文法的**可归前缀**。
 >
-> A为当前句型$\alpha A\omega ​$中最右边的非终结符。
+> A为当前句型$\alpha A\omega $中最右边的非终结符。
 >
 > 句柄是$\gamma $的后缀，即活前缀中最长的一个。
 >
