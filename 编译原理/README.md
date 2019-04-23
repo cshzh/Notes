@@ -1,4 +1,4 @@
-编译原理
+**编译原理中与帮语相关的知识总结**
 
 # 术语
 
@@ -91,24 +91,7 @@ LALR分析器：功能介于SLR和LR(k)之间、实用价值高；规模与LR(0)
 
 通常，同一个文法的LR(1)状态数要比LR(0)的多，而LALR(1)状态数与LR(0)的相同。 
 
-# CUP
-
-每一个生成的解析器包含三个生成的类。
-
-`sym`类包含一系列的整形常量。
-
-`parser`源文件包含两个类的定义
-
-- 公开的`parser`类，实现真实的解析器,它是`java_cup.runtime.lr_parser`的子类，`lr_parser`类实现了LR解析器通用的表驱动的构架。`parser`在提供产生式表、action表和goto表。
-- 非公开的类`CUP$action`，封装用户在文法中定义的所有action，还有来自`action code`声明中的代码。除了用户提供的代码，这个类也包含一个方法`CUP$do_action`，在这个方法中包含了一个大的switch语句来选择和执行各种用户提供的代码段。通常，所有以`CUP$`前缀开始的命名都是保留给CUP生成代码内部使用的。
-
-
-
-将分析栈与符号栈合二为一了。
-
-
-
-[http://www2.cs.tum.edu/projects/cup/docs.php#intro](http://www2.cs.tum.edu/projects/cup/docs.php#intro)
+http://www2.cs.tum.edu/projects/cup/docs.php#intro)
 
 # 两类分析方式
 
