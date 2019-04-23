@@ -20,6 +20,14 @@ public:
         std::strcpy(this->theResource, other.theResource);
     }
 
+    ResourceOwner(ResourceOwner &&other) {
+        printf("move %s\n", other.theResource);
+
+
+        this->theResource = other.theResource;
+        other.theResource = nullptr;
+    }
+
     ResourceOwner &operator=(const ResourceOwner &other) {
         printf("assign %s\n", other.theResource);
 
@@ -28,13 +36,13 @@ public:
         return *this;
     }
 
-//    ResourceOwner &operator=(const char res[]) {
-//        printf("assign %s\n", res);
-//
-//        std::strcpy(this->theResource, res);
-//
-//        return *this;
-//    }
+    ResourceOwner &operator=(const char res[]) {
+        printf("assign %s\n", res);
+
+        std::strcpy(this->theResource, res);
+
+        return *this;
+    }
 
     ~ResourceOwner() {
         if (theResource) {
@@ -51,8 +59,7 @@ void testCopy() {
     // case 1
     printf("=====start testCopy()=====\n");
     ResourceOwner res1("res1");
-    ResourceOwner res2("res2");
-    res2 = "tmp";
+    ResourceOwner res2 = std::move(res1);
     //copy res1
     printf("=====destructors for stack vars, ignore=====\n");
 }
