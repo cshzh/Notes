@@ -1,10 +1,30 @@
 # C++11常用知识点
 
+## 继承
+
+友元关系不能继承
+
+构造函数与复制构造函数不继承
+
+继承权限控制
+
+- `public`继承，基类成员保持自己的访问级别；
+
+- `protected`继承，基类的`public`成员在派生类中是protected的；
+
+- `private`继承，基类的所有成员在派生类中为`private`的。
+
+在派生类作用域中派生类成员将屏蔽基类成员。**即使函数原型不同，基类成员也会被屏蔽**。
+
+
+
 auto 关键字、
 
 for-each 循环、
 
 右值及移动构造函数 + std::forward + std::move + stl 容器新增的 emplace_back() 方法、
+
+[https://stackoverflow.com/questions/332030/when-should-static-cast-dynamic-cast-const-cast-and-reinterpret-cast-be-used](https://stackoverflow.com/questions/332030/when-should-static-cast-dynamic-cast-const-cast-and-reinterpret-cast-be-used)
 
 std::chrono 库、
 
