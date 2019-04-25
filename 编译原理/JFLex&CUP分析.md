@@ -5,8 +5,16 @@
 `jflex.Main#generate` 真正的生成方法
 
 - `java_cup.runtime.lr_parser#parse`生成识别词法的NFA文件
+  - 从正规表达式构造等价的NFA(采用“语法制导”的方法)
 - `jflex.NFA#getDFA`将NFA转为DFA
+  - 子集法
 - `jflex.DFA#minimize`将DFA最小化
+  - 最小化的含义：没有多余状态；没有两个状态是互相等价。
+  - 分割法
+
+`LexParse.cup`包含了`JFLex`自身配置文件的文法规则。
+
+
 
 # CUP源码分析
 
@@ -30,6 +38,11 @@
 
 - `java_cup.non_terminal#compute_first_sets`计算`first`集
 - `java_cup.lalr_state#build_machine`生成识别活前缀的自动机
+  - 项目
+  - 项目集
+  - 项目集簇
+  - 合并了同心集，见`java_cup.lalr_item_set`注释
+  - 使用`Hashtable`实现集合
 - `java_cup.lalr_state#build_table_entries`生成`action`和`goto`表
 
 
