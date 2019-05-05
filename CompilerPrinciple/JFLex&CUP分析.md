@@ -1,4 +1,18 @@
-# JFLex源码分析
+# JFLex
+
+## 配置文件
+
+分为三部分，以`%%`号分隔:
+
+> - [usercode](https://www.jflex.de/manual.html#ExampleUserCode),
+> - [options and declarations](https://www.jflex.de/manual.html#ExampleOptions) and
+> - [lexical rules](https://www.jflex.de/manual.html#ExampleLexRules).
+
+
+
+
+
+## JFLex源码分析
 
 `jflex.Main#main`运行时的入口类，负责解析参数以及调用真正的`generate`方法
 
@@ -16,7 +30,9 @@
 
 
 
-# CUP源码分析
+# CUP
+
+## 源码分析
 
 `java_cup.Main#main`CUP运行的入口方法
 
@@ -52,7 +68,7 @@
 - `java_cup.emit#symbols`生成符号类
 - `java_cup.emit#parser`生成`parser`类的Java文件
 
-# CUP
+## 生成的解析器
 
 每一个生成的解析器包含三个生成的类。
 
