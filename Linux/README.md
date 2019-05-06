@@ -1,5 +1,7 @@
 # Linux
 
+## SystemD
+
 `/etc/init/`目录 与 `/etc/init.d`目录的区别
 
 > `/etc/init`：目录包含`Upstart`使用的配置文件。
@@ -52,4 +54,40 @@ System V init 历史
 查看运行级别与Systemd targets的对应关系`runlevel(8)`
 
 修改默认运行级别 `sudo systemctl set-default graphical.target`
+
+## Bash中的执行方式
+
+### source vs 直接执行
+
+> sourcing will run the commands in the current shell process. 
+>
+> executing will run the commands in a new shell process. 
+
+[https://superuser.com/questions/176783/what-is-the-difference-between-executing-a-bash-script-vs-sourcing-it](https://superuser.com/questions/176783/what-is-the-difference-between-executing-a-bash-script-vs-sourcing-it)
+
+`bash`
+
+> bash(6842)───bash(6958)───sleep(6959)
+
+`source`
+
+> bash(6842)───sleep(6968)
+
+直接执行（run directly）
+
+> bash(6842)───test.sh(6948)───sleep(6949)
+
+`exec`
+
+> test.sh(6842)───sleep(7153)
+
+`eval`
+
+> bash(7447)───test.sh(7467)───sleep(7468)
+
+`source(.) `, `eval` 和`exec`均为`bash`内部命令。
+
+`$`, ` `` `
+
+
 
