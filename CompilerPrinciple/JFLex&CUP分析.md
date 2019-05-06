@@ -10,6 +10,8 @@
 
 ## JFLex源码分析
 
+![JFLex流程](./JFLex流程.png)
+
 `jflex.Main#main`运行时的入口类，负责解析参数以及调用真正的`generate`方法
 
 `jflex.Main#generate` 真正的生成方法
