@@ -1,16 +1,24 @@
-# JFLex
+# 总体架构分析
 
-## 配置文件
+# JFlex
+
+JFlex主要负责根据用户的词法规则文件生成词法识别程序。
+
+![JFLex流程](/home/hui/Projects/Notes/CompilerPrinciple/JFLex%E6%B5%81%E7%A8%8B.png)
+
+JFlex根据词法规则文件生成不确定的有穷自动机(NFA)，再通过子集法将NFA转为DFA，然后通过分割法将DFA最小化，最后以表驱动的形式来识别词汇。
+
+## 词法规则文件
 
 分为三部分，以`%%`号分隔:
 
-> - [usercode](https://www.jflex.de/manual.html#ExampleUserCode),
-> - [options and declarations](https://www.jflex.de/manual.html#ExampleOptions) and
-> - [lexical rules](https://www.jflex.de/manual.html#ExampleLexRules).
+> - 用户代码
+> - 选项和声明
+> - 词法规则文件
 
-## JFLex源码分析
+详见：[JFlex Specifications](https://www.jflex.de/manual.html#Specifications)
 
-![JFLex流程](./JFLex流程.png)
+## 源码分析
 
 `jflex.Main#main`运行时的入口类，负责解析参数以及调用真正的`generate`方法
 
@@ -32,13 +40,30 @@
   
     ![DFA的最小化算法](./DFA的最小化算法.png)
 
-`LexParse.cup`包含了`JFLex`自身配置文件的文法规则。
-
 # CUP
+
+CUP主要负责根据帮语的语法规则文件生成Java语言版的编译器。
+
+![CUP](./CUP代码流程.png)
+
+
+
+## 语法规则文件
+
+它的语法规则文件分为六部分：
+
+- 包和import声明
+- 解析器的类的名称
+- 用户代码部分
+- 符号（终结符和非终结符）列表
+- 优先级声明
+- 文法规则
+
+详见：[Specification Syntax](http://www2.cs.tum.edu/projects/cup/docs.php#spec)
 
 ## 源码分析
 
-`java_cup.Main#main`CUP运行的入口方法
+`java_cup.Main#main` 为CUP运行的入口方法
 
 
 
@@ -62,12 +87,6 @@
 
 - `java_cup.lalr_state#build_machine`生成识别活前缀的自动机
   
-  - 项目
-  
-  - 项目集
-  
-  - 项目集簇
-  
   - 合并了同心集，见`java_cup.lalr_item_set`注释
   
   - 使用`Hashtable`实现集合
@@ -83,7 +102,7 @@
 - `java_cup.emit#symbols`生成符号类
 - `java_cup.emit#parser`生成`parser`类的Java文件
 
-![CUP](./CUP代码流程.png)
+
 
 ## 生成的解析器
 
@@ -119,6 +138,8 @@
 使用`JavaCompiler`后的流程图
 
 ![加入JavaCompiler后的流程](./加入JavaCompiler后的流程.png)
+
+与原来的流程相比，主要改动在于：使用`JavaCompiler`类自动编译生成的源代码形式的Java文件，动态进行替换。
 
 参考：
 
