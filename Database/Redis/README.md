@@ -1,14 +1,30 @@
 # Redis
 
-String
+## String
 
-List
+## 列表（List）
 
-Set
+压缩列表（ziplist）
 
-Hash
+双向循环列表
 
-Zset
+## Set
+
+一种是基于有序数组
+
+另一种是基于散列表。
+
+## 字典（Hash）
+
+压缩列表
+
+散列表
+
+## Zset
+
+压缩列表
+
+跳表
 
 ## RESP protocol description
 
