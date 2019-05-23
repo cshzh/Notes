@@ -36,6 +36,6 @@ endif()
 
 enable_testing()
 
-add_executable(BinarySearch BinarySearch.cpp BinarySearch.h)
+add_executable(BinarySearch BinarySearch.cpp BinarySearch.h BinarySearchTest.cpp)
 target_link_libraries(BinarySearch gtest_main)
 add_test(NAME binary_search_test COMMAND BinarySearch)

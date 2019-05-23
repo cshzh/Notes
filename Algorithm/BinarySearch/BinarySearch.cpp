@@ -3,33 +3,63 @@
 //
 
 #include "BinarySearch.h"
-#include <gtest/gtest.h>
+#include <cmath>
 
 int BinarySearch::binary_search_unique(std::vector<int> v, int target) {
   int low = 0;
   int high = v.size() - 1;
-  int middle = low + ((high - low) >> 1);
+  int middle;
 
-  while (low < high) {
+  while (low <= high) {
+
+    middle = low + ((high - low) >> 1);
+
     if (target < v[middle]) {
-      high = middle;
+      high = middle - 1;
     } else if (target > v[middle]) {
-      low = middle;
+      low = middle + 1;
     } else {
       return middle;
     }
   }
+
   return -1;
 }
 
+double BinarySearch::sqrt(double n) {
+  double epsilon = 0.000001;
 
+  double low = 0.0;
+  double high = n;
+  double middle;
 
-TEST(binary_search_unique, equal) {
-  std::vector<int> v = {1, 3, 5, 7, 9};
-  EXPECT_EQ(BinarySearch::binary_search_unique(v, 5), 2);
+  while (low <= high) {
+    middle = low + ((high - low) / 2.0);
+
+    if (std::abs(middle * middle - n) < epsilon) {
+      return middle;
+    }
+
+    if (middle * middle > n) {
+      high = middle;
+    } else {
+      low = middle;
+    }
+  }
 }
+double BinarySearch::sqrt_newton(double n) {
+  double epsilon = 0.000001;
 
-TEST(binary_search_unique, not_exist) {
-  std::vector<int> v = {1, 3, 5, 7, 9};
-  EXPECT_EQ(BinarySearch::binary_search_unique(v, 4), -1);
+  double x_0 = n / 2.0;
+  double x = n / 2.0;
+
+  while (true) {
+    if (std::abs(x_0 * x_0 - n) < epsilon) {
+      return x_0;
+    }
+
+    x = x_0 - ((x_0 * x_0 - n) / (2.0 * x_0));
+
+    x_0 = x;
+  }
 }

@@ -13,6 +13,9 @@ public:
   static int binary_search_unique(std::vector<int> v, int target);
 
   // 求一个数的平方根（精确到小数点后6位）
+  static double sqrt(double n);
+  // 牛顿迭代法
+  static double sqrt_newton(double n);
 
   // 查找第一个值等于定值的元素
 
