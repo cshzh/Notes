@@ -47,6 +47,7 @@ double BinarySearch::sqrt(double n) {
     }
   }
 }
+
 double BinarySearch::sqrt_newton(double n) {
   double epsilon = 0.000001;
 
@@ -62,4 +63,92 @@ double BinarySearch::sqrt_newton(double n) {
 
     x_0 = x;
   }
+}
+int BinarySearch::bin_search_first_eq(std::vector<int> v, int target) {
+  int low = 0;
+  int high = v.size() - 1;
+  int middle;
+
+  while (low <= high) {
+    middle = low + ((high - low) >> 1);
+
+    if (target < v[middle]) {
+      high = middle - 1;
+    } else if (target > v[middle]) {
+      low = middle + 1;
+    } else {
+      if (0 == middle || v[middle] != v[middle - 1]) {
+        return middle;
+      } else {
+        high = middle - 1;
+      }
+    }
+  }
+
+  return -1;
+}
+int BinarySearch::bin_search_last_eq(std::vector<int> v, int target) {
+  int low = 0;
+  int high = v.size() - 1;
+  int middle;
+
+  while (low <= high) {
+    middle = low + ((high - low) >> 1);
+
+    if (target < v[middle]) {
+      high = middle - 1;
+    } else if (target > v[middle]) {
+      low = middle + 1;
+    } else {
+      if ((v.size() - 1) == middle || v[middle] != v[middle + 1]) {
+        return middle;
+      } else {
+        low = middle + 1;
+      }
+    }
+  }
+
+  return -1;
+}
+int BinarySearch::bin_search_first_ge(std::vector<int> v, int target) {
+  int low = 0;
+  int high = v.size() - 1;
+  int middle;
+
+  while (low <= high) {
+    middle = low + ((high - low) >> 1);
+
+    if (target > v[middle]) {
+      low = middle + 1;
+    } else {
+      if (0 == middle || v[middle - 1] < target) {
+        return middle;
+      } else {
+        high = middle - 1;
+      }
+    }
+  }
+
+  return -1;
+}
+int BinarySearch::bin_search_last_le(std::vector<int> v, int target) {
+  int low = 0;
+  int high = v.size() - 1;
+  int middle;
+
+  while (low <= high) {
+    middle = low + ((high - low) >> 1);
+
+    if (target < v[middle]) {
+      high = middle - 1;
+    } else {
+      if ((v.size() - 1) == middle || v[middle + 1] > target) {
+        return middle;
+      } else {
+        low = middle + 1;
+      }
+    }
+  }
+
+  return -1;
 }

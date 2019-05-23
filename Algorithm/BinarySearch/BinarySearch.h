@@ -18,12 +18,16 @@ public:
   static double sqrt_newton(double n);
 
   // 查找第一个值等于定值的元素
+  static int bin_search_first_eq(std::vector<int> v, int target);
 
   // 查找最后一个值等于定值的元素
+  static int bin_search_last_eq(std::vector<int> v, int target);
 
   // 查找第一个大于等于定值的元素
+  static int bin_search_first_ge(std::vector<int> v, int target);
 
   // 查找最后一个小于等于定值的元素
+  static int bin_search_last_le(std::vector<int> v, int target);
 
   // 循环数组上的二分查找
 };
