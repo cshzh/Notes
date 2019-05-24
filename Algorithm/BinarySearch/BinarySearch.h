@@ -29,7 +29,8 @@ public:
   // 查找最后一个小于等于定值的元素
   static int bin_search_last_le(std::vector<int> v, int target);
 
-  // 循环数组上的二分查找
+  // 循环数组上的二分查找（无重复）
+  static int bin_search_unique_cycle(std::vector<int> v, int target);
 };
 
 #endif // BINARYSEARCH_BINARYSEARCH_H

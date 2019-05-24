@@ -152,3 +152,55 @@ int BinarySearch::bin_search_last_le(std::vector<int> v, int target) {
 
   return -1;
 }
+
+int BinarySearch::bin_search_unique_cycle(std::vector<int> v, int target) {
+  int low = 0;
+  int high = v.size() - 1;
+  int middle;
+
+  while (low <= high) {
+    middle = low + ((high - low) >> 1);
+
+    if (v[low] <= v[high]) {
+      if (v[middle] > target) {
+        high = middle - 1;
+      } else if (v[middle] < target) {
+        low = middle + 1;
+      } else {
+        return middle;
+      }
+    } else {
+      if (v[low] <= v[middle]) {
+        if (target > v[middle]) {
+          low = middle + 1;
+        } else if (target < v[middle]) {
+          if (target > v[low]) {
+            high = middle - 1;
+          } else if (target < v[low]) {
+            low = middle + 1;
+          } else {
+            return low;
+          }
+        } else {
+          return middle;
+        }
+      } else {
+        if (target > v[high]) {
+          high = middle - 1;
+        } else if (target < v[high]) {
+          if (target > v[middle]) {
+            low = middle + 1;
+          } else if (target < v[middle]) {
+            high = middle - 1;
+          } else {
+            return middle;
+          }
+        } else {
+          return high;
+        }
+      }
+    }
+  }
+
+  return -1;
+}

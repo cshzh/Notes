@@ -75,3 +75,39 @@ TEST(bin_search_last_le, equal) {
   std::vector<int> v2 = {-1, 3, 3, 5, 5, 7, 7, 7, 9};
   EXPECT_EQ(BinarySearch::bin_search_last_le(v2, 7), 7);
 }
+
+TEST(bin_search_unique_cycle, not_find) {
+  std::vector<int> v = {1, 3, 5, 7, 9};
+
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, -1), -1);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, 4), -1);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, 12), -1);
+
+  v.clear();
+
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, 5), -1);
+
+  std::vector<int> v2 = {7, 9, 1, 3, 5};
+
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v2, -1), -1);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v2, 4), -1);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v2, 12), -1);
+}
+
+TEST(bin_search_unique_cycle, find) {
+  std::vector<int> v = {7, 9, 1, 3, 5};
+
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, 7), 0);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, 9), 1);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, 1), 2);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, 3), 3);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v, 5), 4);
+
+
+  std::vector<int> v2 = {2, 4, 6, 8, 10 ,12, 14, 16};
+
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v2, 4), 1);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v2, 8), 3);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v2, 12), 5);
+  EXPECT_EQ(BinarySearch::bin_search_unique_cycle(v2, 16), 7);
+}
