@@ -229,11 +229,14 @@ int BinarySearch::find_min_unique_cycle(std::vector<int> v) {
 
   return 0;
 }
+
+// https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
 int BinarySearch::bin_search_cycle(std::vector<int> v, int target) {
   // TODO
   return 0;
 }
 
+// https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
 int BinarySearch::find_min_cycle(std::vector<int> v) {
   // TODO
   return 0;
