@@ -229,3 +229,12 @@ int BinarySearch::find_min_unique_cycle(std::vector<int> v) {
 
   return 0;
 }
+int BinarySearch::bin_search_cycle(std::vector<int> v, int target) {
+  // TODO
+  return 0;
+}
+
+int BinarySearch::find_min_cycle(std::vector<int> v) {
+  // TODO
+  return 0;
+}
