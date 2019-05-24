@@ -31,6 +31,9 @@ public:
 
   // 循环数组上的二分查找（无重复）
   static int bin_search_unique_cycle(std::vector<int> v, int target);
+
+  // 循环数组上的查找最小元素（无重复）
+  static int find_min_unique_cycle(std::vector<int> v);
 };
 
 #endif // BINARYSEARCH_BINARYSEARCH_H

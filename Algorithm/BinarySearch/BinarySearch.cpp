@@ -204,3 +204,28 @@ int BinarySearch::bin_search_unique_cycle(std::vector<int> v, int target) {
 
   return -1;
 }
+int BinarySearch::find_min_unique_cycle(std::vector<int> v) {
+  int low = 0;
+  int high = v.size() - 1;
+  int middle;
+
+  while (low <= high) {
+    middle = low + ((high - low) >> 1);
+
+    if (v[low] <= v[high]) {
+      return v[low];
+    } else {
+      if (v[low] <= v[middle]) {
+        low = middle + 1;
+      } else {
+        if (0 == middle || v[middle - 1] > v[middle]) {
+          return v[middle];
+        } else {
+          high = middle - 1;
+        }
+      }
+    }
+  }
+
+  return 0;
+}
