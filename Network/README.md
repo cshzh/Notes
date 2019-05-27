@@ -1,5 +1,28 @@
 计算机网络
 
+# 网络设备
+
+当一块网卡发送信息时有可能和另一块网卡冲突的所有的网卡的集合称为**冲突域**。
+
+一块网卡发出一个广播，能收到这个广播的所有的网卡的集合称为一个**广播域**。
+
+- 中继器
+- 集线器
+- 网桥
+- 交换机
+- 路由器
+
+  - 不带NAT
+  - 带NAT
+  - NAPT
+
+- 网关
+
+
+[https://www.cnblogs.com/sddai/p/5480002.html](https://www.cnblogs.com/sddai/p/5480002.html)
+
+[https://blog.csdn.net/frankarmstrong/article/details/77969699](https://blog.csdn.net/frankarmstrong/article/details/77969699)
+
 # IP
 
 ![IP数据报格式](./IP数据报格式.png)
