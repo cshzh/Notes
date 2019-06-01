@@ -3,7 +3,9 @@
 //
 
 #include "BinarySearch.h"
+
 #include <cmath>
+#include <stdexcept>
 
 int BinarySearch::binary_search_unique(std::vector<int> v, int target) {
   int low = 0;
@@ -64,6 +66,7 @@ double BinarySearch::sqrt_newton(double n) {
     x_0 = x;
   }
 }
+
 int BinarySearch::bin_search_first_eq(std::vector<int> v, int target) {
   int low = 0;
   int high = v.size() - 1;
@@ -87,6 +90,7 @@ int BinarySearch::bin_search_first_eq(std::vector<int> v, int target) {
 
   return -1;
 }
+
 int BinarySearch::bin_search_last_eq(std::vector<int> v, int target) {
   int low = 0;
   int high = v.size() - 1;
@@ -110,6 +114,7 @@ int BinarySearch::bin_search_last_eq(std::vector<int> v, int target) {
 
   return -1;
 }
+
 int BinarySearch::bin_search_first_ge(std::vector<int> v, int target) {
   int low = 0;
   int high = v.size() - 1;
@@ -131,6 +136,7 @@ int BinarySearch::bin_search_first_ge(std::vector<int> v, int target) {
 
   return -1;
 }
+
 int BinarySearch::bin_search_last_le(std::vector<int> v, int target) {
   int low = 0;
   int high = v.size() - 1;
@@ -204,6 +210,7 @@ int BinarySearch::bin_search_unique_cycle(std::vector<int> v, int target) {
 
   return -1;
 }
+
 int BinarySearch::find_min_unique_cycle(std::vector<int> v) {
   int low = 0;
   int high = v.size() - 1;
@@ -231,13 +238,93 @@ int BinarySearch::find_min_unique_cycle(std::vector<int> v) {
 }
 
 // https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
-int BinarySearch::bin_search_cycle(std::vector<int> v, int target) {
-  // TODO
-  return 0;
+bool BinarySearch::bin_search_cycle(std::vector<int> v, int target) {
+  if (v.empty()) {
+    return false;
+  }
+
+  int low = 0;
+  int high = v.size() - 1;
+  int middle;
+
+  while (low <= high) {
+    middle = low + ((high - low) >> 1);
+
+    if (target == v[middle]) {
+      return true;
+    }
+
+    if (v[low] == v[middle] && v[middle] == v[high]) {
+      low++;
+      high--;
+      continue;
+    }
+
+    if (v[low] <= v[middle]) {
+      if (target >= v[low] && target < v[middle]) {
+        high = middle - 1;
+      } else {
+        low = middle + 1;
+      }
+    } else {
+      if (target > v[middle] && target <= v[high]) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+  }
+
+  return false;
 }
 
 // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
 int BinarySearch::find_min_cycle(std::vector<int> v) {
-  // TODO
-  return 0;
+  if (v.empty()) {
+    throw std::invalid_argument("元素个数不能为0");
+  }
+
+  int low = 0;
+  int high = v.size() - 1;
+  int middle = 0;
+
+  if (high == 0) {
+    return v[0];
+  }
+
+  while (v[low] >= v[high]) {
+    middle = low + ((high - low) >> 1);
+
+    if (1 == high - low) {
+      return v[high];
+    }
+
+    if (v[low] == v[middle] && v[middle] == v[high]) {
+      return min_in_order(v);
+    }
+
+    if (v[low] <= v[middle]) {
+      low = middle;
+    } else if (v[middle] <= v[high]) {
+      high = middle;
+    }
+  }
+
+  return v[low];
+}
+
+int BinarySearch::min_in_order(std::vector<int> v) {
+  if (v.empty()) {
+    throw std::invalid_argument("参数不能为空！");
+  }
+
+  int min = v[0];
+
+  for (auto &item : v) {
+    if (item < min) {
+      min = item;
+    }
+  }
+
+  return min;
 }
