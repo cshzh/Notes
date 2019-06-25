@@ -2,6 +2,7 @@
 // Created by hui on 19-6-24.
 //
 
+
 #include "gtest/gtest.h"
 #include "hash_map.h"
 
@@ -64,6 +65,9 @@ TEST(hash_map_test, integration) {
     hash_map map;
 
     for (int i = 1; i < 1000; i += 2) {
+        if (i == 17 ) {
+            map;
+        }
         map.put(i, i + 1);
         EXPECT_EQ(i + 1, map.get(i));
         EXPECT_EQ((i + 1) / 2, map.size());
