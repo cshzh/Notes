@@ -9,6 +9,31 @@
 
 > “不要通过共享内存来通信，而应该通过通信来共享内存。”
 
+```go
+// squares返回⼀个匿名函数。
+// 该匿名函数每次被调⽤时都会返回下⼀个数的平⽅。
+func squares() func() int {
+var x int
+return func() int {
+x++
+return x * x
+}
+}
+func main() {
+f := squares()
+fmt.Println(f()) // "1"
+fmt.Println(f()) // "4"
+fmt.Println(f()) // "9"
+fmt.Println(f()) // "16"
+}
+```
+
+> 函数值属于**引用类型**，函数值**不可比较**。
+>
+> Go使用**闭包**（closures）技术实现函数值，Go程序员也把函数值叫做闭包。
+>
+> **变量的生命周期不由它的作用域决定**：squares返回后，变量x仍然隐式的存在于f中。
+
 ## 函数参数传递
 
 | 类型  | 增                                 | 删                                   | 改                           |
@@ -35,21 +60,49 @@ m = make(map[string]int)
 
 ### Chan
 
-### Struct
-
-### Interface
-
-
-
-`append`函数 实现原理 为什么可以对不同类型操作
-
-`...Type (append函数)`与`...interface (fmt.printf函数中)`的区别
-
-`struct {}` vs `interface{}`
-
 ### 方法
 
-### 类型断言
+### 接口
+
+`...interface{}`vs`[]interface{}`
+
+`...interface{}`可变参数
+
+#### 接口值
+
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io"
+)
+
+func foo(out io.Writer) {
+	fmt.Println(nil == out)
+}
+
+func main() {
+	var buff *bytes.Buffer
+	fmt.Println(nil == buff)
+	var out io.Writer
+	out = buff
+	fmt.Println(nil == out)
+	foo(buff)
+}
+
+```
+
+```bash
+true
+false
+false
+```
+
+> **一个包含nil指针的接口不是nil接口**
+
+#### 类型断言
 
 `v.(float64)`
 
