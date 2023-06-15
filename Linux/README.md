@@ -87,7 +87,12 @@ System V init 历史
 
 `source(.) `, `eval` 和`exec`均为`bash`内部命令。
 
-`$`, ` `` `
+## 性能分析工具
+
+iostat、pidstat 来自[sysstat](https://gitee.com/mirrors/sysstat)
+
+perf 来自[linux-tools-common](https://packages.ubuntu.com/search?keywords=linux-tools-common)
+
 
 
 
