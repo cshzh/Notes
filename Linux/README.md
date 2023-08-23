@@ -89,10 +89,35 @@ System V init 历史
 
 ## 性能分析工具
 
+## CPU
+
+perf
+
+### 生成火焰图
+
+```bash
+perf record -F 99 -a -g -- sleep 60
+perf script | /home/hui/Projects/Github/FlameGraph/stackcollapse-perf.pl > /home/hui/Projects/Github/FlameGraph/out.perf-fold
+./flamegraph.pl out.perf-fold > perf-kernel.svg
+```
+
+## 内存
+
+memleak
+
+- Q: buffer 与 cache的区别 
+- A: man proc
+
+## 磁盘
 iostat、pidstat 来自[sysstat](https://gitee.com/mirrors/sysstat)
 
 perf 来自[linux-tools-common](https://packages.ubuntu.com/search?keywords=linux-tools-common)
 
+filetop 来自[bcc软件包](https://github.com/iovisor/bcc)
+
+opensnoop 来自[bcc软件包](https://github.com/iovisor/bcc)
+
+fio(Flexible I/O Tester) I/O性能基准测试工具
 
 
 
